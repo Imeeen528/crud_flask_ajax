@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products List</title>
+</head>
+<body>
+  <h1>Products List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.description }}</td>
+          <td>
+            <a href="{{ url_for('edit_product', id=product.id) }}">Edit</a>
+            <button type="button" class="btn-delete" data-id="{{ product.id }}">Delete</button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('create_product') }}">Create New Product</a>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('.btn-delete').click(function() {
+        var id = $(this).data('id');
+        $.ajax({
+          url: '/products/' + id,
+          method: 'DELETE',
+          success: function(response) {
+            location.reload();
+          },
+          error: function(xhr, status, error) {
+            console.log(error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

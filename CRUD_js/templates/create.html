@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Product</title>
+</head>
+<body>
+  <h1>Create Product</h1>
+  <form id="create-form" method="POST" action="{{ url_for('create_product') }}">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="price">Price:</label>
+      <input type="number" id="price" name="price" required>
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+    </div>
+    <div>
+      <button type="submit">Create</button>
+    </div>
+  </form>
+  <a href="{{ url_for('index') }}">Back to Products List</a>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() { //the script is executed when the document is fully loaded
+      $('#create-form').submit(function(event) {
+        event.preventDefault(); //prevents the default form submission action, which would normally cause the page to reload
+        $.ajax({
+          url: $(this).attr('action'),
+          method: 'POST',
+          data: $(this).serialize(), //serializes the form data into a string format that can be sent in the HTTP request
+          success: function(response) {
+            window.location.href = "{{ url_for('index') }}";
+          },
+          error: function(xhr, status, error) {
+            console.log(error);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
